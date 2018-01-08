@@ -21,23 +21,31 @@ async function main() {
         accessToken
     });
     console.log(`Opening Contentful space "${spaceId}`);
-    const contentfulSpace = await contentfulManagementClient.getSpace(argv["space-id"]);
-    const batchSize = 1000;
-    let skip = 0;
-    let total = 0;
+    const contentfulSpace = await contentfulManagementClient.getSpace(spaceId);
+
+    const metadata = await contentfulSpace.getEntries({
+        include: 0,
+        limit: 0
+    });
+    let totalEntries = metadata.total;
+    console.log(`Deleting "${totalEntries}" entries`);
+
+    const batchSize = 3;
     do {
         const entries = await contentfulSpace.getEntries({
             include: 0,
-            limit: batchSize,
-            skip
+            limit: batchSize
         });
-        total = entries.total;
+        totalEntries = entries.total;
         for (const entry of entries.items) {
+            if (entry.isPublished()) {
+                console.log(`Unpublishing entry "${entry.sys.id}"`);
+                await entry.unpublish();
+            }
             console.log(`Deleting entry '${entry.sys.id}"`);
             await entry.delete();
         }
-        skip += batchSize;
-    } while (total > skip + batchSize);
+    } while (totalEntries > batchSize);
 }
 
 (async () => {
