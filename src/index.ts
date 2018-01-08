@@ -38,12 +38,17 @@ async function main() {
         });
         totalEntries = entries.total;
         for (const entry of entries.items) {
-            if (entry.isPublished()) {
-                console.log(`Unpublishing entry "${entry.sys.id}"`);
-                await entry.unpublish();
+            try {
+                if (entry.isPublished()) {
+                    console.log(`Unpublishing entry "${entry.sys.id}"`);
+                    await entry.unpublish();
+                }
+                console.log(`Deleting entry '${entry.sys.id}"`);
+                await entry.delete();
+            } catch (e) {
+                console.log(e);
+                // Continue if something went wrong with Contentful
             }
-            console.log(`Deleting entry '${entry.sys.id}"`);
-            await entry.delete();
         }
     } while (totalEntries > batchSize);
 }
