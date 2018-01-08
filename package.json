@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "contentful-management": "^4.1.2",
+    "tslint": "^5.8.0",
     "yargs": "^10.0.3"
   },
   "devDependencies": {
