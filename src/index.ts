@@ -14,11 +14,30 @@ async function main() {
         demandOption: true
     }).version(false)
         .parse();
+    const accessToken = argv["access-token"];
+    const spaceId = argv["space-id"];
 
     const contentfulManagementClient = createClient({
-        accessToken: argv["access-token"]
+        accessToken
     });
+    console.log(`Opening Contentful space "${spaceId}`);
     const contentfulSpace = await contentfulManagementClient.getSpace(argv["space-id"]);
+    const batchSize = 1000;
+    let skip = 0;
+    let total = 0;
+    do {
+        const entries = await contentfulSpace.getEntries({
+            include: 0,
+            limit: batchSize,
+            skip
+        });
+        total = entries.total;
+        for (const entry of entries.items) {
+            console.log(`Deleting entry '${entry.sys.id}"`);
+            await entry.delete();
+        }
+        skip += batchSize;
+    } while (total > skip + batchSize);
 }
 
 (async () => {
