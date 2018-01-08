@@ -4,7 +4,7 @@
   "description": "Removes content from a contentful space.",
   "main": "build/index.js",
   "scripts": {
-    "build": "node ./node_modules/typescript/bin/tsc --outDir ./build ./src/index.ts",
+    "build": "node ./node_modules/typescript/bin/tsc --outDir ./build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

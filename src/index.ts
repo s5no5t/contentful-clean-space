@@ -1,6 +1,6 @@
 // tslint:disable-next-line:no-reference
 ///<reference path="./contentful-management.d.ts" />
-import { createManagementClient } from "contentful-management";
+import { createClient } from "contentful-management";
 import * as yargs from "yargs";
 
 async function main() {
@@ -15,7 +15,7 @@ async function main() {
     }).version(false)
         .parse();
 
-    const contentfulManagementClient = createManagementClient({
+    const contentfulManagementClient = createClient({
         accessToken: argv["access-token"]
     });
     const contentfulSpace = await contentfulManagementClient.getSpace(argv["space-id"]);
