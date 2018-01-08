@@ -2,13 +2,17 @@
   "name": "contentful-clean-space",
   "version": "0.0.1",
   "description": "Removes content from a contentful space.",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
+    "build": "node ./node_modules/typescript/bin/tsc --outDir ./build ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "contentful-management": "^4.1.2"
+  },
+  "devDependencies": {
+    "typescript": "^2.6.2"
   }
 }
