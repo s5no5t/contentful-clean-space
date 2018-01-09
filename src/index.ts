@@ -13,10 +13,16 @@ export async function main() {
             type: "string",
             describe: "Contentful access token",
             demandOption: true
+        }).option("verbose", {
+            type: "boolean",
+            alias: "v",
+            default: false
         }).version(false)
         .parse();
-    const accessToken = argv["access-token"];
-    const spaceId = argv["space-id"];
+    const accessToken: string = argv["access-token"];
+    const spaceId: string = argv["space-id"];
+    // tslint:disable-next-line:no-string-literal
+    const verbose: boolean = argv["verbose"];
 
     const contentfulManagementClient = createClient({
         accessToken
@@ -41,10 +47,12 @@ export async function main() {
         for (const entry of entries.items) {
             try {
                 if (entry.isPublished()) {
-                    console.log(`Unpublishing entry "${entry.sys.id}"`);
+                    if (verbose)
+                        console.log(`Unpublishing entry "${entry.sys.id}"`);
                     await entry.unpublish();
                 }
-                console.log(`Deleting entry '${entry.sys.id}"`);
+                if (verbose)
+                    console.log(`Deleting entry '${entry.sys.id}"`);
                 await entry.delete();
             } catch (e) {
                 console.log(e);
