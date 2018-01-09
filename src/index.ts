@@ -3,7 +3,7 @@
 import { createClient } from "contentful-management";
 import * as yargs from "yargs";
 
-async function main() {
+export async function main() {
     const argv = yargs.option("space-id", {
         type: "string",
         describe: "Contentful space id",
@@ -52,7 +52,3 @@ async function main() {
         }
     } while (totalEntries > batchSize);
 }
-
-(async () => {
-    await main();
-})();
