@@ -14,6 +14,10 @@ export async function main() {
             type: "string",
             describe: "Contentful access token",
             demandOption: true
+        }).option("batch-size", {
+            type: "number",
+            describe: "Number of parallel contentful requests",
+            default: 5
         }).option("verbose", {
             type: "boolean",
             alias: "v",
@@ -23,6 +27,7 @@ export async function main() {
     const accessToken: string = argv["accesstoken"];
     const spaceId: string = argv["space-id"];
     const verbose: boolean = argv["verbose"];
+    const batchSize: number = argv["batch-size"];
 
     const contentfulManagementClient = createClient({
         accessToken
@@ -38,8 +43,6 @@ export async function main() {
     let totalEntries = metadata.total;
     console.log(`Found ${totalEntries} entries`);
 
-    const batchSize = 10;
-
     // tslint:disable-next-line:max-line-length
     const progressBar = new ProgressBar("Deleting entries [:bar], rate: :rate/s, done: :percent, time left: :etas", { total: totalEntries });
     do {
@@ -48,23 +51,31 @@ export async function main() {
             limit: batchSize
         });
         totalEntries = entries.total;
+
+        const promises: Array<Promise<void>> = [];
         for (const entry of entries.items) {
-            try {
-                if (entry.isPublished()) {
-                    if (verbose)
-                        console.log(`Unpublishing entry "${entry.sys.id}"`);
-                    await entry.unpublish();
-                }
-                if (verbose)
-                    console.log(`Deleting entry '${entry.sys.id}"`);
-                await entry.delete();
-            } catch (e) {
-                console.log(e);
-                // Continue if something went wrong with Contentful
-            } finally {
-                progressBar.tick();
-            }
+            const promise = unpublishAndDelete(entry, progressBar, verbose);
+            promises.push(promise);
         }
+        await Promise.all(promises);
     } while (totalEntries > batchSize);
     console.log("Done");
+}
+
+async function unpublishAndDelete(entry: any, progressBar: ProgressBar, verbose: boolean) {
+    try {
+        if (entry.isPublished()) {
+            if (verbose)
+                console.log(`Unpublishing entry "${entry.sys.id}"`);
+            await entry.unpublish();
+        }
+        if (verbose)
+            console.log(`Deleting entry '${entry.sys.id}"`);
+        await entry.delete();
+    } catch (e) {
+        console.log(e);
+        // Continue if something went wrong with Contentful
+    } finally {
+        progressBar.tick();
+    }
 }
