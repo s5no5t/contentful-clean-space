@@ -1,4 +1,5 @@
 src/
+build/**/*.js.map
 .vscode/
 tsconfig.json
 tslint.json
