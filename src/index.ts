@@ -10,7 +10,7 @@ export async function main() {
             type: "string",
             describe: "Contentful space id",
             demandOption: true
-        }).option("access-token", {
+        }).option("accesstoken", {
             type: "string",
             describe: "Contentful access token",
             demandOption: true
@@ -20,9 +20,8 @@ export async function main() {
             default: false
         }).version(false)
         .parse();
-    const accessToken: string = argv["access-token"];
+    const accessToken: string = argv["accesstoken"];
     const spaceId: string = argv["space-id"];
-    // tslint:disable-next-line:no-string-literal
     const verbose: boolean = argv["verbose"];
 
     const contentfulManagementClient = createClient({
@@ -39,7 +38,7 @@ export async function main() {
     let totalEntries = metadata.total;
     console.log(`Found ${totalEntries} entries`);
 
-    const batchSize = 3;
+    const batchSize = 10;
 
     // tslint:disable-next-line:max-line-length
     const progressBar = new ProgressBar("Deleting entries [:bar], rate: :rate/s, done: :percent, time left: :etas", { total: totalEntries });
