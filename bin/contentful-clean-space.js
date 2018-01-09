@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const index = require("../build/index");
+const index = require("../build/main");
 
 (async () => {
     await index.main();
