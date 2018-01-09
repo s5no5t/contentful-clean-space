@@ -6,7 +6,7 @@
     "node": ">=7.10.1"
   },
   "bin": {
-    "contentful-clean-space": "bin/contentful-clean-space.js"
+    "contentful-clean-space": "./bin/contentful-clean-space.js"
   },
   "scripts": {
     "build": "node ./node_modules/typescript/bin/tsc --outDir ./build",
