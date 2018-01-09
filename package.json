@@ -2,7 +2,9 @@
   "name": "contentful-clean-space",
   "version": "0.0.1",
   "description": "Removes content from a contentful space.",
-  "main": "build/index.js",
+  "engines": {
+    "node": ">=7.10.1"
+  },
   "bin": {
     "contentful-clean-space": "../bin/contentful-clean-space.js"
   },
@@ -10,7 +12,7 @@
     "build": "node ./node_modules/typescript/bin/tsc --outDir ./build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Stephan Oehlert <stephan.oehlert@gmail.com",
   "license": "ISC",
   "dependencies": {
     "contentful-management": "^4.1.2",
