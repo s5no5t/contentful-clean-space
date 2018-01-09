@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "description": "Removes content from a contentful space.",
   "main": "build/index.js",
+  "bin": {
+    "contentful-clean-space": "./build/index.js"
+  },
   "scripts": {
     "build": "node ./node_modules/typescript/bin/tsc --outDir ./build",
     "test": "echo \"Error: no test specified\" && exit 1"
