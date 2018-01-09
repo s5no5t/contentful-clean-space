@@ -1,6 +1,7 @@
 // tslint:disable-next-line:no-reference
 ///<reference path="./contentful-management.d.ts" />
 import { createClient } from "contentful-management";
+import * as ProgressBar from "progress";
 import * as yargs from "yargs";
 
 export async function main() {
@@ -29,15 +30,19 @@ export async function main() {
     });
     console.log(`Opening Contentful space "${spaceId}`);
     const contentfulSpace = await contentfulManagementClient.getSpace(spaceId);
+    console.log(`Using space "${spaceId}" (${contentfulSpace.name})`);
 
     const metadata = await contentfulSpace.getEntries({
         include: 0,
         limit: 0
     });
     let totalEntries = metadata.total;
-    console.log(`Deleting "${totalEntries}" entries`);
+    console.log(`Found ${totalEntries} entries`);
 
     const batchSize = 3;
+
+    // tslint:disable-next-line:max-line-length
+    const progressBar = new ProgressBar("Deleting entries [:bar], rate: :rate/s, done: :percent, time left: :etas", { total: totalEntries });
     do {
         const entries = await contentfulSpace.getEntries({
             include: 0,
@@ -57,7 +62,10 @@ export async function main() {
             } catch (e) {
                 console.log(e);
                 // Continue if something went wrong with Contentful
+            } finally {
+                progressBar.tick();
             }
         }
     } while (totalEntries > batchSize);
+    console.log("Done");
 }
