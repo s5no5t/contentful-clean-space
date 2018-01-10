@@ -41,7 +41,7 @@ export async function main() {
         limit: 0
     });
     let totalEntries = metadata.total;
-    console.log(`Found ${totalEntries} entries`);
+    console.log(`Deleting ${totalEntries} entries`);
 
     // tslint:disable-next-line:max-line-length
     const progressBar = new ProgressBar("Deleting entries [:bar], rate: :rate/s, done: :percent, time left: :etas", { total: totalEntries });
