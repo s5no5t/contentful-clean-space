@@ -78,4 +78,5 @@ async function unpublishAndDelete(entry: any, progressBar: ProgressBar, verbose:
     } finally {
         progressBar.tick();
     }
+    console.log("Done");
 }
