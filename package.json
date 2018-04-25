@@ -20,11 +20,13 @@
   },
   "dependencies": {
     "contentful-management": "^4.1.2",
+    "inquirer": "^5.2.0",
     "progress": "^2.0.0",
     "tslint": "^5.8.0",
     "yargs": "^10.0.3"
   },
   "devDependencies": {
+    "@types/inquirer": "0.0.41",
     "@types/progress": "^2.0.1",
     "@types/yargs": "^10.0.1",
     "typescript": "^2.6.2"

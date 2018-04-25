@@ -1,6 +1,7 @@
 // tslint:disable-next-line:no-reference
 ///<reference path="./contentful-management.d.ts" />
 import { createClient } from "contentful-management";
+import * as inquirer from "inquirer";
 import * as ProgressBar from "progress";
 import * as yargs from "yargs";
 
@@ -32,7 +33,7 @@ export async function main() {
     const contentfulManagementClient = createClient({
         accessToken
     });
-    console.log(`Opening Contentful space "${spaceId}`);
+    console.log(`Opening Contentful space "${spaceId}"`);
     const contentfulSpace = await contentfulManagementClient.getSpace(spaceId);
     console.log(`Using space "${spaceId}" (${contentfulSpace.name})`);
 
@@ -41,6 +42,15 @@ export async function main() {
         limit: 0
     });
     let totalEntries = metadata.total;
+
+    const a: any = await inquirer.prompt([{
+        type: "confirm",
+        name: "yes",
+        message: `Do you really want to delete all entries from space ${spaceId}?`
+      }]);
+    if (!a.yes)
+      return 0;
+
     console.log(`Deleting ${totalEntries} entries`);
 
     // tslint:disable-next-line:max-line-length
