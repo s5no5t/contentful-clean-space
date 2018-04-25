@@ -50,13 +50,8 @@ export async function main() {
     let totalEntries = metadata.total;
 
     if (!yes) {
-        const a: any = await inquirer.prompt([{
-            type: "confirm",
-            name: "yes",
-            message: `Do you really want to delete all entries from space ${spaceId}?`
-          }]);
-        if (!a.yes)
-          return 0;
+        if (!await promptForConfirmation(spaceId))
+            return;
     }
 
     console.log(`Deleting ${totalEntries} entries`);
@@ -72,7 +67,7 @@ export async function main() {
 
         const promises: Array<Promise<void>> = [];
         for (const entry of entries.items) {
-            const promise = unpublishAndDelete(entry, progressBar, verbose);
+            const promise = unpublishAndDeleteEntry(entry, progressBar, verbose);
             promises.push(promise);
         }
         await Promise.all(promises);
@@ -80,7 +75,16 @@ export async function main() {
     console.log("Done");
 }
 
-async function unpublishAndDelete(entry: any, progressBar: ProgressBar, verbose: boolean) {
+async function promptForConfirmation(spaceId: string) {
+    const a: any = await inquirer.prompt([{
+        type: "confirm",
+        name: "yes",
+        message: `Do you really want to delete all entries from space ${spaceId}?`
+    }]);
+    return a.yes;
+}
+
+async function unpublishAndDeleteEntry(entry: any, progressBar: ProgressBar, verbose: boolean) {
     try {
         if (entry.isPublished()) {
             if (verbose)
