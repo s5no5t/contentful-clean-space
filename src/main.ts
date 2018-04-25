@@ -38,7 +38,7 @@ export async function main() {
     const spaceId: string = argv["space-id"];
     const verbose: boolean = argv["verbose"];
     const batchSize: number = argv["batch-size"];
-    const deleteContentTypes: boolean = argv["content-types"];
+    const isContentTypes: boolean = argv["content-types"];
     const yes: boolean = argv["yes"];
 
     const contentfulManagementClient = createClient({
@@ -52,7 +52,36 @@ export async function main() {
         if (!await promptForEntriesConfirmation(spaceId))
             return;
     }
+    await deleteEntries(contentfulSpace, batchSize, verbose);
 
+    if (isContentTypes) {
+        if (!yes) {
+            if (!await promptForContentTypesConfirmation(spaceId))
+                return;
+        }
+        await deleteContentTypes(contentfulSpace, batchSize, verbose);
+    }
+}
+
+async function promptForEntriesConfirmation(spaceId: string) {
+    const a: any = await inquirer.prompt([{
+        type: "confirm",
+        name: "yes",
+        message: `Do you really want to delete all entries from space ${spaceId}?`
+    }]);
+    return a.yes;
+}
+
+async function promptForContentTypesConfirmation(spaceId: string) {
+    const a: any = await inquirer.prompt([{
+        type: "confirm",
+        name: "yes",
+        message: `Do you really want to delete all content types from space ${spaceId}?`
+    }]);
+    return a.yes;
+}
+
+async function deleteEntries(contentfulSpace: any, batchSize: number, verbose: boolean) {
     const entriesMetadata = await contentfulSpace.getEntries({
         include: 0,
         limit: 0
@@ -76,55 +105,6 @@ export async function main() {
         }
         await Promise.all(promises);
     } while (totalEntries > batchSize);
-
-    if (deleteContentTypes) {
-        if (!yes) {
-            if (!await promptForContentTypesConfirmation(spaceId))
-                return;
-        }
-
-        const contentTypesMetadata = await contentfulSpace.getContentTypes({
-            include: 0,
-            limit: 0
-        });
-        let totalContentTypes = contentTypesMetadata.total;
-        console.log(`Deleting ${totalContentTypes} content types`);
-
-        // tslint:disable-next-line:max-line-length
-        const contentTypesProgressBar = new ProgressBar("Deleting content types [:bar], rate: :rate/s, done: :percent, time left: :etas", { total: totalContentTypes });
-        do {
-            const contentTypes = await contentfulSpace.getContentTypes({
-                include: 0,
-                limit: batchSize
-            });
-            totalContentTypes = contentTypes.total;
-
-            const promises: Array<Promise<void>> = [];
-            for (const contentType of contentTypes.items) {
-                const promise = unpublishAndDeleteContentType(contentType, contentTypesProgressBar, verbose);
-                promises.push(promise);
-            }
-            await Promise.all(promises);
-        } while (totalContentTypes > batchSize);
-    }
-}
-
-async function promptForEntriesConfirmation(spaceId: string) {
-    const a: any = await inquirer.prompt([{
-        type: "confirm",
-        name: "yes",
-        message: `Do you really want to delete all entries from space ${spaceId}?`
-    }]);
-    return a.yes;
-}
-
-async function promptForContentTypesConfirmation(spaceId: string) {
-    const a: any = await inquirer.prompt([{
-        type: "confirm",
-        name: "yes",
-        message: `Do you really want to delete all content types from space ${spaceId}?`
-    }]);
-    return a.yes;
 }
 
 async function unpublishAndDeleteEntry(entry: any, progressBar: ProgressBar, verbose: boolean) {
@@ -143,6 +123,32 @@ async function unpublishAndDeleteEntry(entry: any, progressBar: ProgressBar, ver
     } finally {
         progressBar.tick();
     }
+}
+
+async function deleteContentTypes(contentfulSpace: any, batchSize: number, verbose: boolean) {
+    const contentTypesMetadata = await contentfulSpace.getContentTypes({
+        include: 0,
+        limit: 0
+    });
+    let totalContentTypes = contentTypesMetadata.total;
+    console.log(`Deleting ${totalContentTypes} content types`);
+
+    // tslint:disable-next-line:max-line-length
+    const contentTypesProgressBar = new ProgressBar("Deleting content types [:bar], rate: :rate/s, done: :percent, time left: :etas", { total: totalContentTypes });
+    do {
+        const contentTypes = await contentfulSpace.getContentTypes({
+            include: 0,
+            limit: batchSize
+        });
+        totalContentTypes = contentTypes.total;
+
+        const promises: Array<Promise<void>> = [];
+        for (const contentType of contentTypes.items) {
+            const promise = unpublishAndDeleteContentType(contentType, contentTypesProgressBar, verbose);
+            promises.push(promise);
+        }
+        await Promise.all(promises);
+    } while (totalContentTypes > batchSize);
 }
 
 async function unpublishAndDeleteContentType(contentType: any, progressBar: ProgressBar, verbose: boolean) {
