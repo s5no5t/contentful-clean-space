@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.4.1]
+- Improve README
+
 ## [0.4.0]
 - Add --content-types parameter to delete content types as well
 
