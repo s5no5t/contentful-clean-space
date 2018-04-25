@@ -13,8 +13,15 @@ npm install -g contentful-clean-space
 
 Usage
 -----
-Use the `--help` parameter to display help.
 ```
-contentful-clean-space --help
+contentful-clean-space
+Options:
+  --help           Show help                                           [boolean]
+  --space-id       Contentful space id                       [string] [required]
+  --accesstoken    Contentful access token                   [string] [required]
+  --batch-size     Number of parallel contentful requests  [number] [default: 5]
+  --content-types  Delete content types as well       [boolean] [default: false]
+  --yes, -y        Auto-confirm delete prompt         [boolean] [default: false]
+  --verbose, -v                                       [boolean] [default: false]
 ```
 All parameters can be provided from environment variables, too. To do that, just set an environment variable using UPPER_CASE casing.
