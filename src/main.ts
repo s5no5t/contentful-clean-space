@@ -19,6 +19,11 @@ export async function main() {
             type: "number",
             describe: "Number of parallel contentful requests",
             default: 5
+        }).option("yes", {
+            type: "boolean",
+            describe: "Auto-confirm delete prompt",
+            alias: "y",
+            default: false
         }).option("verbose", {
             type: "boolean",
             alias: "v",
@@ -29,6 +34,7 @@ export async function main() {
     const spaceId: string = argv["space-id"];
     const verbose: boolean = argv["verbose"];
     const batchSize: number = argv["batch-size"];
+    const yes: boolean = argv["yes"];
 
     const contentfulManagementClient = createClient({
         accessToken
@@ -43,13 +49,15 @@ export async function main() {
     });
     let totalEntries = metadata.total;
 
-    const a: any = await inquirer.prompt([{
-        type: "confirm",
-        name: "yes",
-        message: `Do you really want to delete all entries from space ${spaceId}?`
-      }]);
-    if (!a.yes)
-      return 0;
+    if (!yes) {
+        const a: any = await inquirer.prompt([{
+            type: "confirm",
+            name: "yes",
+            message: `Do you really want to delete all entries from space ${spaceId}?`
+          }]);
+        if (!a.yes)
+          return 0;
+    }
 
     console.log(`Deleting ${totalEntries} entries`);
 
