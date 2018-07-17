@@ -1,6 +1,6 @@
 # Changelog
 
-## [patch]
+## [0.4.2]
 - Return exit code 1 when exception is thrown
 
 ## [0.4.1]

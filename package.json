@@ -1,9 +1,9 @@
 {
   "name": "contentful-clean-space",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Removes content from a contentful space.",
   "engines": {
-    "node": ">=7.10.1"
+    "node": ">=9"
   },
   "bin": {
     "contentful-clean-space": "./bin/contentful-clean-space.js"
