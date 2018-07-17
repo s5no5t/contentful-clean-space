@@ -2,5 +2,11 @@
 const index = require("../build/main");
 
 (async () => {
-    await index.main();
+    try {
+        await index.main();
+    }
+    catch (e) {
+        console.log(e);
+        process.exitCode = 1;
+    }
 })();
