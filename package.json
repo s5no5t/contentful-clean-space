@@ -19,16 +19,16 @@
     "url": "https://github.com/jugglingthebits/contentful-clean-space"
   },
   "dependencies": {
-    "contentful-management": "^4.1.2",
-    "inquirer": "^5.2.0",
+    "contentful-management": "^5.1.4",
+    "inquirer": "^6.0.0",
     "progress": "^2.0.0",
     "tslint": "^5.8.0",
-    "yargs": "^10.0.3"
+    "yargs": "^12.0.1"
   },
   "devDependencies": {
-    "@types/inquirer": "0.0.41",
+    "@types/inquirer": "0.0.42",
     "@types/progress": "^2.0.1",
-    "@types/yargs": "^10.0.1",
+    "@types/yargs": "^11.1.0",
     "typescript": "^2.6.2"
   }
 }
