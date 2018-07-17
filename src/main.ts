@@ -82,7 +82,8 @@ async function promptForContentTypesConfirmation(spaceId: string) {
 }
 
 async function deleteEntries(contentfulSpace: any, batchSize: number, verbose: boolean) {
-    const entriesMetadata = await contentfulSpace.getEntries({
+    const masterEnvironment = await contentfulSpace.getEnvironment("master");
+    const entriesMetadata = await masterEnvironment.getEntries({
         include: 0,
         limit: 0
     });
@@ -92,7 +93,7 @@ async function deleteEntries(contentfulSpace: any, batchSize: number, verbose: b
     // tslint:disable-next-line:max-line-length
     const entriesProgressBar = new ProgressBar("Deleting entries [:bar], rate: :rate/s, done: :percent, time left: :etas", { total: totalEntries });
     do {
-        const entries = await contentfulSpace.getEntries({
+        const entries = await masterEnvironment.getEntries({
             include: 0,
             limit: batchSize
         });
@@ -126,7 +127,8 @@ async function unpublishAndDeleteEntry(entry: any, progressBar: ProgressBar, ver
 }
 
 async function deleteContentTypes(contentfulSpace: any, batchSize: number, verbose: boolean) {
-    const contentTypesMetadata = await contentfulSpace.getContentTypes({
+    const masterEnvironment = await contentfulSpace.getEnvironment("master");
+    const contentTypesMetadata = await masterEnvironment.getContentTypes({
         include: 0,
         limit: 0
     });
