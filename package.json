@@ -1,34 +1,34 @@
 {
-  "name": "contentful-clean-space",
-  "version": "0.4.2",
-  "description": "Removes content from a contentful space.",
-  "engines": {
-    "node": ">=9"
-  },
-  "bin": {
-    "contentful-clean-space": "./bin/contentful-clean-space.js"
-  },
-  "scripts": {
-    "build": "node ./node_modules/typescript/bin/tsc --outDir ./build",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Stephan Oehlert <stephan.oehlert@gmail.com",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jugglingthebits/contentful-clean-space"
-  },
-  "dependencies": {
-    "contentful-management": "^5.7.0",
-    "inquirer": "^6.2.2",
-    "progress": "^2.0.3",
-    "tslint": "^5.15.0",
-    "yargs": "^13.2.2"
-  },
-  "devDependencies": {
-    "@types/inquirer": "6.0.0",
-    "@types/progress": "^2.0.3",
-    "@types/yargs": "^12.0.11",
-    "typescript": "^3.4.1"
-  }
+    "name": "contentful-clean-space",
+    "version": "0.5.0",
+    "description": "Removes content from a contentful space.",
+    "engines": {
+        "node": ">=9"
+    },
+    "bin": {
+        "contentful-clean-space": "./bin/contentful-clean-space.js"
+    },
+    "scripts": {
+        "build": "node ./node_modules/typescript/bin/tsc --outDir ./build",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Stephan Oehlert <stephan.oehlert@gmail.com",
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jugglingthebits/contentful-clean-space"
+    },
+    "dependencies": {
+        "contentful-management": "^5.7.0",
+        "inquirer": "^6.2.2",
+        "progress": "^2.0.3",
+        "tslint": "^5.15.0",
+        "yargs": "^13.2.2"
+    },
+    "devDependencies": {
+        "@types/inquirer": "6.0.0",
+        "@types/progress": "^2.0.3",
+        "@types/yargs": "^12.0.11",
+        "typescript": "^3.4.1"
+    }
 }
