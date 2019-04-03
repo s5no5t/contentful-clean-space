@@ -18,6 +18,7 @@ contentful-clean-space
 Options:
   --help           Show help                                           [boolean]
   --space-id       Contentful space id                       [string] [required]
+  --env            Contentful environment             [string] [default: master]
   --accesstoken    Contentful access token                   [string] [required]
   --batch-size     Number of parallel contentful requests  [number] [default: 5]
   --content-types  Delete content types as well       [boolean] [default: false]
