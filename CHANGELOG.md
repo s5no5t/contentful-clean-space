@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.5.0]
+- Add env option to specify Contentful environment (contributed by @Ikstar)
+- Update dependencies
+
 ## [0.4.2]
 - Return exit code 1 when exception is thrown
 
