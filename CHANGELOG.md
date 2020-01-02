@@ -1,5 +1,8 @@
 # Changelog
 
+## [Unreleased]
+- Update libraries
+
 ## [0.5.0]
 - Add env option to specify Contentful environment (contributed by @Ikstar)
 - Update dependencies
