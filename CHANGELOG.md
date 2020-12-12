@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 - Update libraries
+- Add option to remove Assets/Media
 
 ## [0.5.0]
 - Add env option to specify Contentful environment (contributed by @Ikstar)

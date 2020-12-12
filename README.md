@@ -22,6 +22,7 @@ Options:
   --accesstoken    Contentful access token                   [string] [required]
   --batch-size     Number of parallel contentful requests  [number] [default: 5]
   --content-types  Delete content types as well       [boolean] [default: false]
+  --assets         Delete assets as well              [boolean] [default: false]
   --yes, -y        Auto-confirm delete prompt         [boolean] [default: false]
   --verbose, -v                                       [boolean] [default: false]
 ```
