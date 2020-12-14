@@ -1,5 +1,6 @@
 import { createClient } from "contentful-management";
 import {
+  Asset,
   ContentType,
   Entry,
   Space,
@@ -37,6 +38,11 @@ export async function main() {
       describe: "Delete content types as well",
       default: false,
     })
+    .option("assets", {
+      type: "boolean",
+      describe: "Delete assets as well",
+      default: false,
+    })
     .option("yes", {
       type: "boolean",
       describe: "Auto-confirm delete prompt",
@@ -55,6 +61,7 @@ export async function main() {
   const verbose: boolean = argv["verbose"];
   const batchSize: number = argv["batch-size"];
   const isContentTypes: boolean = argv["content-types"];
+  const isAssets: boolean = argv["assets"];
   const yes: boolean = argv["yes"];
 
   const env: string = argv["env"] || "master";
@@ -76,6 +83,13 @@ export async function main() {
       if (!(await promptForContentTypesConfirmation(spaceId, env))) return;
     }
     await deleteContentTypes(contentfulSpace, batchSize, verbose, env);
+  }
+
+  if (isAssets) {
+    if (!yes) {
+      if (!(await promptForAssetsConfirmation(spaceId, env))) return;
+    }
+    await deleteAssets(contentfulSpace, batchSize, verbose, env);
   }
 }
 
@@ -102,6 +116,20 @@ async function promptForContentTypesConfirmation(
       type: "confirm",
       name: "yes",
       message: `Do you really want to delete all content types from space ${spaceId}:${environment}?`,
+    },
+  ]);
+  return a.yes;
+}
+
+async function promptForAssetsConfirmation(
+  spaceId: string,
+  environment: string
+) {
+  const a: any = await inquirer.prompt([
+    {
+      type: "confirm",
+      name: "yes",
+      message: `Do you really want to delete all assets/media from space ${spaceId}:${environment}?`,
     },
   ]);
   return a.yes;
@@ -147,7 +175,7 @@ async function deleteEntries(
 }
 
 async function unpublishAndDeleteEntry(
-  entry: Entry,
+  entry: Entry | Asset,
   progressBar: ProgressBar,
   verbose: boolean
 ) {
@@ -224,4 +252,43 @@ async function unpublishAndDeleteContentType(
   } finally {
     progressBar.tick();
   }
+}
+
+async function deleteAssets(
+  contentfulSpace: Space,
+  batchSize: number,
+  verbose: boolean,
+  environment: string
+) {
+  const selectedEnvironment = await contentfulSpace.getEnvironment(environment);
+  const entriesMetadata = await selectedEnvironment.getAssets({
+    include: 0,
+    limit: 0,
+  });
+  let totalEntries = entriesMetadata.total;
+  console.log(`Deleting ${totalEntries} entries`);
+
+  // tslint:disable-next-line:max-line-length
+  const entriesProgressBar = new ProgressBar(
+    "Deleting entries [:bar], rate: :rate/s, done: :percent, time left: :etas",
+    { total: totalEntries }
+  );
+  do {
+    const assets = await selectedEnvironment.getAssets({
+      include: 0,
+      limit: batchSize,
+    });
+    totalEntries = assets.total;
+
+    const promises: Array<Promise<void>> = [];
+    for (const asset of assets.items) {
+      const promise = unpublishAndDeleteEntry(
+        asset,
+        entriesProgressBar,
+        verbose
+      );
+      promises.push(promise);
+    }
+    await Promise.all(promises);
+  } while (totalEntries > batchSize);
 }
