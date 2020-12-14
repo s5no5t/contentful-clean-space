@@ -29,6 +29,6 @@
         "@types/inquirer": "6.5.0",
         "@types/progress": "^2.0.3",
         "@types/yargs": "^13.0.4",
-        "typescript": "^3.7.4"
+        "typescript": "^4.1.3"
     }
 }
