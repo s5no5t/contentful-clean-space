@@ -97,42 +97,42 @@ async function promptForEntriesConfirmation(
   spaceId: string,
   environment: string
 ) {
-  const a: any = await inquirer.prompt([
+  const prompt = await inquirer.prompt<{ yes: boolean }>([
     {
       type: "confirm",
       name: "yes",
       message: `Do you really want to delete all entries from space ${spaceId}:${environment}?`,
     },
   ]);
-  return a.yes;
+  return prompt.yes;
 }
 
 async function promptForContentTypesConfirmation(
   spaceId: string,
   environment: string
 ) {
-  const a: any = await inquirer.prompt([
+  const prompt = await inquirer.prompt<{ yes: boolean }>([
     {
       type: "confirm",
       name: "yes",
       message: `Do you really want to delete all content types from space ${spaceId}:${environment}?`,
     },
   ]);
-  return a.yes;
+  return prompt.yes;
 }
 
 async function promptForAssetsConfirmation(
   spaceId: string,
   environment: string
 ) {
-  const a: any = await inquirer.prompt([
+  const prompt = await inquirer.prompt<{ yes: boolean }>([
     {
       type: "confirm",
       name: "yes",
       message: `Do you really want to delete all assets/media from space ${spaceId}:${environment}?`,
     },
   ]);
-  return a.yes;
+  return prompt.yes;
 }
 
 async function deleteEntries(
