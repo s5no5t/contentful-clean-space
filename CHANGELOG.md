@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.6.0]
+
 - Add option to remove Assets/Media (contributed by [@anisval](https://github.com/anisval)
 - Update to latest contentful-manangement release
 
