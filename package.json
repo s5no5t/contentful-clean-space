@@ -23,7 +23,7 @@
         "inquirer": "^7.0.1",
         "progress": "^2.0.3",
         "tslint": "^5.20.1",
-        "yargs": "^15.1.0"
+        "yargs": "^16.2.0"
     },
     "devDependencies": {
         "@types/inquirer": "6.5.0",
