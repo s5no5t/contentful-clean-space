@@ -22,7 +22,6 @@
     "contentful-management": "^7.5.0",
     "inquirer": "^7.3.3",
     "progress": "^2.0.3",
-    "tslint": "^5.20.1",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
