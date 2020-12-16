@@ -4,6 +4,7 @@
 
 - Don't default to "master" environment any more as a safety measure agains unintended deletions
 - Fix assets deletion log messages
+- Log environment name on start
 
 ## [0.6.1]
 
