@@ -29,7 +29,7 @@ export async function main() {
     })
     .option("batch-size", {
       type: "number",
-      describe: "Number of parallel contentful requests",
+      describe: "Number of parallel Contentful requests",
       default: 5,
     })
     .option("content-types", {
