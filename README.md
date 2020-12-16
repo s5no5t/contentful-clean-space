@@ -17,15 +17,16 @@ npm install -g contentful-clean-space
 ```
 contentful-clean-space
 Options:
-  --help           Show help                                           [boolean]
-  --space-id       Contentful space id                       [string] [required]
-  --env            Contentful environment             [string] [default: master]
-  --accesstoken    Contentful access token                   [string] [required]
-  --batch-size     Number of parallel contentful requests  [number] [default: 5]
-  --content-types  Delete content types as well       [boolean] [default: false]
-  --assets         Delete assets as well              [boolean] [default: false]
-  --yes, -y        Auto-confirm delete prompt         [boolean] [default: false]
-  --verbose, -v                                       [boolean] [default: false]
+      --help           Show help                                       [boolean]
+      --space-id       Contentful space id                   [string] [required]
+      --env            Contentful environment                [string] [required]
+      --accesstoken    Contentful access token               [string] [required]
+      --batch-size     Number of parallel contentful requests
+                                                           [number] [default: 5]
+      --content-types  Delete content types as well   [boolean] [default: false]
+      --assets         Delete assets as well          [boolean] [default: false]
+  -y, --yes            Auto-confirm delete prompt     [boolean] [default: false]
+  -v, --verbose                                       [boolean] [default: false]
 ```
 
 All parameters can be provided from environment variables, too. To do that, just set an environment variable using UPPER_CASE casing.
