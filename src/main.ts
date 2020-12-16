@@ -71,6 +71,7 @@ export async function main() {
   console.log(`Opening Contentful space "${spaceId}"`);
   const contentfulSpace = await contentfulManagementClient.getSpace(spaceId);
   console.log(`Using space "${spaceId}" (${contentfulSpace.name})`);
+  console.log(`Using environment "${env}"`);
 
   if (!yes) {
     if (!(await promptForEntriesConfirmation(spaceId, env))) return;
