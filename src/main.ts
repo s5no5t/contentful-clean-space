@@ -260,24 +260,24 @@ async function deleteAssets(
   environment: string
 ) {
   const selectedEnvironment = await contentfulSpace.getEnvironment(environment);
-  const entriesMetadata = await selectedEnvironment.getAssets({
+  const assetsMetadata = await selectedEnvironment.getAssets({
     include: 0,
     limit: 0,
   });
-  let totalEntries = entriesMetadata.total;
-  console.log(`Deleting ${totalEntries} entries`);
+  let totalAssets = assetsMetadata.total;
+  console.log(`Deleting ${totalAssets} assets/media`);
 
   // tslint:disable-next-line:max-line-length
   const entriesProgressBar = new ProgressBar(
-    "Deleting entries [:bar], rate: :rate/s, done: :percent, time left: :etas",
-    { total: totalEntries }
+    "Deleting assets [:bar], rate: :rate/s, done: :percent, time left: :etas",
+    { total: totalAssets }
   );
   do {
     const assets = await selectedEnvironment.getAssets({
       include: 0,
       limit: batchSize,
     });
-    totalEntries = assets.total;
+    totalAssets = assets.total;
 
     const promises: Array<Promise<void>> = [];
     for (const asset of assets.items) {
@@ -289,5 +289,5 @@ async function deleteAssets(
       promises.push(promise);
     }
     await Promise.all(promises);
-  } while (totalEntries > batchSize);
+  } while (totalAssets > batchSize);
 }

@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Don't default to "master" environment any more as a safety measure agains unintended deletions
+- Fix assets deletion log messages
 
 ## [0.6.1]
 
