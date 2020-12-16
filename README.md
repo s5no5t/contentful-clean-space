@@ -30,3 +30,7 @@ Options:
 ```
 
 All parameters can be provided from environment variables, too. To do that, just set an environment variable using UPPER_CASE casing.
+
+## Example Usage
+
+To delete all entries, content types, as well as assets, and without the safety prompt, use `contentful-clean-space --space-id [space id] --accesstoken [personal access token] --content-types=yes --assets=true --env master --yes=true`
