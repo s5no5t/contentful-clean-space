@@ -20,8 +20,7 @@ export async function main() {
     .option("env", {
       type: "string",
       describe: "Contentful environment",
-      default: "master",
-      demandOption: false,
+      demandOption: true,
     })
     .option("accesstoken", {
       type: "string",

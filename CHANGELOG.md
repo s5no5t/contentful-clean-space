@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Don't default to "master" environment any more as a safety measure agains unintended deletions
+
 ## [0.6.1]
 
 - remove outdated dep on ts-lint
