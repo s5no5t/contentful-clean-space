@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.7.4]
+
+- Revert faulty ts-node usage
+
 ## [0.7.0]
 
 - Don't default to "master" environment any more as a safety measure agains unintended deletions
