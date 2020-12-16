@@ -68,7 +68,6 @@ export async function main() {
   const contentfulManagementClient = createClient({
     accessToken,
   });
-  console.log(`Opening Contentful space "${spaceId}"`);
   const contentfulSpace = await contentfulManagementClient.getSpace(spaceId);
   console.log(`Using space "${spaceId}" (${contentfulSpace.name})`);
   console.log(`Using environment "${env}"`);
