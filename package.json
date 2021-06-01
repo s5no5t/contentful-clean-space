@@ -22,7 +22,7 @@
     "contentful-management": "^7.5.0",
     "inquirer": "^8.0.0",
     "progress": "^2.0.3",
-    "yargs": "^16.2.0"
+    "yargs": "^17.0.1"
   },
   "devDependencies": {
     "@types/inquirer": "7.3.1",
