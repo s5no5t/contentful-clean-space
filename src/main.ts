@@ -10,7 +10,7 @@ import * as ProgressBar from "progress";
 import * as yargs from "yargs";
 
 export async function main() {
-  const argv = yargs
+  const argv = await yargs
     .env()
     .option("space-id", {
       type: "string",
