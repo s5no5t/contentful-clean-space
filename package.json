@@ -1,6 +1,6 @@
 {
   "name": "contentful-clean-space",
-  "version": "0.7.4",
+  "version": "0.8.0",
   "description": "Removes content from a contentful space.",
   "engines": {
     "node": ">=9"

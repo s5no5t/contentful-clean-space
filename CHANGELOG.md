@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [0.8.0]
+
+- Drop support for Node 10
+
 ## [0.7.4]
 
 - Revert faulty ts-node usage
