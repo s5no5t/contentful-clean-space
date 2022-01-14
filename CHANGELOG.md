@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.9.0]
+
+- Update deps
+- Require Node 12
+
 ## [0.8.0]
 
 - Drop support for Node 10
