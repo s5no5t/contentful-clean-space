@@ -45,7 +45,7 @@
 
 ## [0.4.0]
 
-- Add --content-types parameter to delete content types as well
+- Add --delete-content-types parameter to delete content types as well
 
 ## [0.3.0]
 
