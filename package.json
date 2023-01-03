@@ -21,12 +21,12 @@
   },
   "dependencies": {
     "contentful-management": "^10.26.0",
-    "inquirer": "^8.2.0",
+    "inquirer": "^9.1.4",
     "progress": "^2.0.3",
     "yargs": "^17.3.1"
   },
   "devDependencies": {
-    "@types/inquirer": "8.2.0",
+    "@types/inquirer": "9.0.3",
     "@types/progress": "^2.0.5",
     "@types/yargs": "^17.0.8",
     "prettier": "^2.8.1",
