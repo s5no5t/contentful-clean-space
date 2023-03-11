@@ -37,6 +37,11 @@ export async function main() {
       describe: "Delete content types as well",
       default: false,
     })
+    .option("tags", {
+      type: "boolean",
+      describe: "Delete tags as well",
+      default: false,
+    })
     .option("assets", {
       type: "boolean",
       describe: "Delete assets as well",
@@ -60,6 +65,7 @@ export async function main() {
   const verbose: boolean = argv["verbose"];
   const batchSize: number = argv["batch-size"];
   const isContentTypes: boolean = argv["content-types"];
+  const isTags: boolean = argv["tags"];
   const isAssets: boolean = argv["assets"];
   const yes: boolean = argv["yes"];
 
@@ -90,6 +96,13 @@ export async function main() {
     }
     await deleteAssets(contentfulSpace, batchSize, verbose, env);
   }
+
+  if (isTags) {
+    if (!yes) {
+      if (!(await promptForTagsConfirmation(spaceId, env))) return;
+    }
+    await deleteTags(contentfulSpace, batchSize, verbose, env);
+  }
 }
 
 async function promptForEntriesConfirmation(
@@ -115,6 +128,17 @@ async function promptForContentTypesConfirmation(
       type: "confirm",
       name: "yes",
       message: `Do you really want to delete all content types from space ${spaceId}:${environment}?`,
+    },
+  ]);
+  return prompt.yes;
+}
+
+async function promptForTagsConfirmation(spaceId: string, environment: string) {
+  const prompt = await inquirer.prompt<{ yes: boolean }>([
+    {
+      type: "confirm",
+      name: "yes",
+      message: `Do you really want to delete all tags from space ${spaceId}:${environment}?`,
     },
   ]);
   return prompt.yes;
@@ -251,6 +275,52 @@ async function unpublishAndDeleteContentType(
   } finally {
     progressBar.tick();
   }
+}
+
+async function deleteTags(
+  contentfulSpace: Space,
+  batchSize: number,
+  verbose: boolean,
+  environment: string
+) {
+  const selectedEnvironment = await contentfulSpace.getEnvironment(environment);
+  const tagsMetadata = await selectedEnvironment.getTags({
+    limit: 0,
+  });
+
+  let totalTags = tagsMetadata.total;
+  console.log(`Deleting ${totalTags} tags`);
+
+  // tslint:disable-next-line:max-line-length
+  const tagsProgressBar = new ProgressBar(
+    "Deleting tags [:bar], rate: :rate/s, done: :percent, time left: :etas",
+    { total: totalTags }
+  );
+
+  do {
+    const tags = await selectedEnvironment.getTags({
+      limit: batchSize,
+    });
+
+    totalTags = tags.total;
+
+    const promises: Array<Promise<void>> = [];
+
+    for (const tag of tags.items) {
+      if (verbose) {
+        console.log(`Deleting tag: ${tag.name} (${tag.sys.id})`);
+      }
+
+      try {
+        promises.push(tag.delete());
+      } catch (ex) {
+        console.error(ex);
+      } finally {
+        tagsProgressBar.tick();
+      }
+    }
+    await Promise.all(promises);
+  } while (totalTags > batchSize);
 }
 
 async function deleteAssets(
