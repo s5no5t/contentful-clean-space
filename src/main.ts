@@ -42,6 +42,11 @@ export async function main() {
       describe: "Delete assets as well",
       default: false,
     })
+    .option("locales", {
+      type: "boolean",
+      describe: "Delete assets as well",
+      default: false,
+    })
     .option("yes", {
       type: "boolean",
       describe: "Auto-confirm delete prompt",
@@ -61,6 +66,7 @@ export async function main() {
   const batchSize: number = argv["batch-size"];
   const isContentTypes: boolean = argv["content-types"];
   const isAssets: boolean = argv["assets"];
+  const isLocales = argv["locales"];
   const yes: boolean = argv["yes"];
 
   const env: string = argv["env"] || "master";
@@ -89,6 +95,13 @@ export async function main() {
       if (!(await promptForAssetsConfirmation(spaceId, env))) return;
     }
     await deleteAssets(contentfulSpace, batchSize, verbose, env);
+  }
+
+  if (isLocales) {
+    if (!yes) {
+      if (!(await promptForLocalesConfirmation(spaceId, env))) return;
+    }
+    await deleteLocales(contentfulSpace, verbose, env);
   }
 }
 
@@ -129,6 +142,20 @@ async function promptForAssetsConfirmation(
       type: "confirm",
       name: "yes",
       message: `Do you really want to delete all assets/media from space ${spaceId}:${environment}?`,
+    },
+  ]);
+  return prompt.yes;
+}
+
+async function promptForLocalesConfirmation(
+  spaceId: string,
+  environment: string
+) {
+  const prompt = await inquirer.prompt<{ yes: boolean }>([
+    {
+      type: "confirm",
+      name: "yes",
+      message: `Do you really want to delete all locales from space ${spaceId}:${environment}?`,
     },
   ]);
   return prompt.yes;
@@ -290,4 +317,45 @@ async function deleteAssets(
     }
     await Promise.all(promises);
   } while (totalAssets > batchSize);
+}
+
+async function deleteLocales(
+  contentfulSpace: Space,
+  verbose: boolean,
+  environment: string
+) {
+  const selectedEnvironment = await contentfulSpace.getEnvironment(environment);
+  const locales = await selectedEnvironment.getLocales();
+
+  let totalLocales = locales.total;
+  console.log(`Deleting ${totalLocales} tags`);
+
+  // tslint:disable-next-line:max-line-length
+  const localesProgressBar = new ProgressBar(
+    "Deleting locales [:bar], rate: :rate/s, done: :percent, time left: :etas",
+    { total: totalLocales }
+  );
+
+  const promises: Array<Promise<void>> = [];
+
+  for (const locale of locales.items) {
+    if (verbose) {
+      console.log(`Deleting locale: ${locale.name} (${locale.code})`);
+    }
+    if (locale.default) {
+      console.log(
+        `Cannot delete default locale: ${locale.name} (${locale.code})`
+      );
+      continue;
+    }
+
+    try {
+      promises.push(locale.delete());
+    } catch (ex) {
+      console.error(ex);
+    } finally {
+      localesProgressBar.tick();
+    }
+  }
+  await Promise.all(promises);
 }

@@ -24,6 +24,7 @@ Options:
       --batch-size     Number of parallel contentful requests
                                                            [number] [default: 5]
       --content-types  Delete content types as well   [boolean] [default: false]
+      --locales        Delete locales as well         [boolean] [default: false]
       --assets         Delete assets as well          [boolean] [default: false]
   -y, --yes            Auto-confirm delete prompt     [boolean] [default: false]
   -v, --verbose                                       [boolean] [default: false]
